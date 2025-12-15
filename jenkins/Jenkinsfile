@@ -1,24 +1,18 @@
 pipeline {
-    agent { any
+    agent any
     stages {
         stage('Build & Push Docker Image') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
-                    container('kaniko') {
-                        script {
-                            // Create Docker config for Kaniko authentication
-                            sh """
-                            mkdir -p /kaniko/.docker
-                            echo '{"auths":{"https://index.docker.io/v1/":{"username":"$USER","password":"$PASS"}}}' > /kaniko/.docker/config.json
-                            """
-
-                            // Build and push image using Kaniko
-                            sh """
-                            /kaniko/executor --dockerfile=/workspace/app/Dockerfile \
-                                             --context=/workspace/app \
-                                             --destination=sridevi1902/flask-app:latest
-                            """
-                        }
+                    script {
+                        // Login to Docker Hub
+                        sh 'echo $PASS | docker login -u $USER --password-stdin'
+                        
+                        // Build Docker image
+                        sh 'docker build -t sridevi1902/flask-app:latest ./app'
+                        
+                        // Push Docker image to Docker Hub
+                        sh 'docker push sridevi1902/flask-app:latest'
                     }
                 }
             }
@@ -26,11 +20,9 @@ pipeline {
 
         stage('Deploy to Kubernetes') {
             steps {
-                container('kaniko') {
-                    script {
-                        sh 'kubectl apply -f k8s/deployment.yaml'
-                        sh 'kubectl apply -f k8s/service.yaml'
-                    }
+                script {
+                    sh 'kubectl apply -f k8s/deployment.yaml'
+                    sh 'kubectl apply -f k8s/service.yaml'
                 }
             }
         }
