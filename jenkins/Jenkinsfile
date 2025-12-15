@@ -3,15 +3,25 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                script {
-                    sh 'docker build -t sridevi1902/flask-app:latest ./app'
-                    sh 'docker push sridevi1902/flask-app:latest'
+                // Use Jenkins credentials to login to Docker Hub
+                withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
+                    script {
+                        // Login to Docker Hub
+                        sh 'echo $PASS | docker login -u $USER --password-stdin'
+                        
+                        // Build Docker image
+                        sh 'docker build -t sridevi1902/flask-app:latest ./app'
+                        
+                        // Push Docker image to Docker Hub
+                        sh 'docker push sridevi1902/flask-app:latest'
+                    }
                 }
             }
         }
         stage('Deploy to Kubernetes') {
             steps {
                 script {
+                    // Apply Kubernetes manifests
                     sh 'kubectl apply -f k8s/deployment.yaml'
                     sh 'kubectl apply -f k8s/service.yaml'
                 }
@@ -19,4 +29,3 @@ pipeline {
         }
     }
 }
-
