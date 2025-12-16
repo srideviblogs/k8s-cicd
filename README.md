@@ -19,7 +19,7 @@ This project demonstrates a full **CI/CD pipeline** using **Jenkins**, **Kaniko*
 
 ## 🏗 Architecture
 
-![Architecture Diagram](./k8s-cicd/screenshorts/architecture.jpg)  
+![Architecture Diagram](screenshorts/architecture.jpg)  
 *Flow: GitHub → Jenkins (Kaniko) → DockerHub → ArgoCD → Kubernetes Pods → NGINX Ingress → Browser*
 
 **Flow:**
