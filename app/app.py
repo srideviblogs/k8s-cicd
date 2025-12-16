@@ -1,52 +1,69 @@
 from flask import Flask
 from prometheus_client import start_http_server, Counter
 from datetime import datetime
-import subprocess
 
 app = Flask(__name__)
 
-# Prometheus metrics
+# Prometheus metric
 REQUEST_COUNT = Counter('flask_requests_total', 'Total HTTP requests')
 start_http_server(8000)  # Expose metrics on port 8000
 
-# Deployment timestamp
-DEPLOY_TIME = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-# Get latest Git commit
-def get_git_commit():
-    try:
-        commit = subprocess.check_output(["git", "rev-parse", "--short", "HEAD"]).decode("utf-8").strip()
-    except:
-        commit = "N/A"
-    return commit
+# Deployment info
+DEPLOYMENT_TIME = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+LAST_COMMIT = "N/A"  # Update dynamically if desired
+CI_CD_STATUS = "✅ Success"
 
 @app.route("/")
-def portfolio_landing():
+def portfolio_home():
     REQUEST_COUNT.inc()
-    git_commit = get_git_commit()
     return f"""
     <html>
-        <head>
-            <title>Flask CI/CD Showcase</title>
-            <style>
-                body {{ font-family: Arial, sans-serif; text-align: center; padding-top: 50px; background-color: #f5f5f5; }}
-                h1 {{ color: #2c3e50; }}
-                p {{ color: #34495e; font-size: 18px; }}
-                .info {{ margin-top: 20px; font-size: 16px; color: #16a085; }}
-                .status {{ margin-top: 10px; font-size: 14px; color: #e67e22; }}
-            </style>
-        </head>
-        <body>
-            <h1>🚀 Flask CI/CD + GitOps Project</h1>
-            <p>This demo application is deployed using Minikube, ArgoCD, and Jenkins pipelines.</p>
-            <div class="info">
-                <p>Tech Stack: Flask | Docker | Kubernetes | Jenkins | ArgoCD | NGINX Ingress | Prometheus</p>
-                <p>Last Git Commit: <strong>{git_commit}</strong></p>
-                <p>Deployment Time: <strong>{DEPLOY_TIME}</strong></p>
-                <p class="status">CI/CD Status: ✅ Success</p>
-                <p class="status">Total Requests: <strong>{int(REQUEST_COUNT._value.get())}</strong></p>
-            </div>
-        </body>
+    <head>
+        <title>🚀 Flask CI/CD + GitOps Project</title>
+        <style>
+            body {{
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                background: linear-gradient(to right, #f0f4f8, #d9e2ec);
+                color: #102a43;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                min-height: 100vh;
+                margin: 0;
+            }}
+            h1 {{
+                color: #2b7de9;
+                margin-bottom: 20px;
+            }}
+            .card {{
+                background: #fff;
+                padding: 30px 50px;
+                border-radius: 15px;
+                box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+                max-width: 600px;
+                width: 100%;
+            }}
+            .metric {{
+                font-size: 1.1em;
+                margin: 12px 0;
+            }}
+            .metric span {{
+                font-weight: bold;
+                color: #334e68;
+            }}
+        </style>
+    </head>
+    <body>
+        <h1>🚀 Flask CI/CD + GitOps Project</h1>
+        <div class="card">
+            <div class="metric"><span>Tech Stack:</span> Flask | Docker | Kubernetes | Jenkins | ArgoCD | NGINX Ingress | Prometheus</div>
+            <div class="metric"><span>Last Git Commit:</span> {LAST_COMMIT}</div>
+            <div class="metric"><span>Deployment Time:</span> {DEPLOYMENT_TIME}</div>
+            <div class="metric"><span>CI/CD Status:</span> {CI_CD_STATUS}</div>
+            <div class="metric"><span>Total Requests:</span> {int(REQUEST_COUNT._value.get())}</div>
+        </div>
+    </body>
     </html>
     """
 
