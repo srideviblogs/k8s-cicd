@@ -6,7 +6,7 @@ This project demonstrates a full **CI/CD pipeline** using **Jenkins**, **Kaniko*
 ---
 
 
-## 🛠 Tech Stack
+## Tech Stack
 
 - **CI/CD:** Jenkins, Kaniko  
 - **GitOps:** ArgoCD  
