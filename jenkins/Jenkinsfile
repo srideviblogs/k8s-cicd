@@ -10,7 +10,7 @@ spec:
     image: jenkins/inbound-agent:latest
     tty: true
   - name: kaniko
-    image: docker.io/kaniko/executor:latest
+    image: quay.io/openshift/kaniko-executor:latest
     command:
     - cat
     tty: true
