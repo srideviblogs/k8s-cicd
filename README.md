@@ -19,7 +19,7 @@ This project demonstrates a full **CI/CD pipeline** using **Jenkins**, **Kaniko*
 
 ## 🏗 Architecture
 
-![Architecture Diagram](screenshots/architecture.jpg)  
+![Architecture Diagram](./k8s-cicd/screenshots/architecture.jpg)  
 *Flow: GitHub → Jenkins (Kaniko) → DockerHub → ArgoCD → Kubernetes Pods → NGINX Ingress → Browser*
 
 **Flow:**
@@ -35,7 +35,7 @@ This project demonstrates a full **CI/CD pipeline** using **Jenkins**, **Kaniko*
 
 ## ⚙️ CI/CD Pipeline (Jenkins)
 
-![Jenkins Pipeline](screenshots/jenkins-pipeline.jpg)  
+![Jenkins Pipeline](./k8s-cicd/screenshots/jenkins-pipeline.jpg)  
 *Pipeline stages: Checkout, Build & Push, Deploy to Kubernetes via ArgoCD*
 
 
@@ -58,9 +58,9 @@ kubectl get ingress -n jenkins
 Shows the Flask app synced and healthy with automated GitOps deployment.
 
 
-![Argocd-Dashboard](screenshots/argocd-dashboard.jpg)
+![Argocd-Dashboard](./k8s-cicd/screenshots/argocd-dashboard.jpg)
 
-![Argocd-Dashboard1](screenshots/argocd-dashboard1.jpg)
+![Argocd-Dashboard1](./k8s-cicd/screenshots/argocd-dashboard1.jpg)
 
 
 
