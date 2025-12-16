@@ -6,11 +6,10 @@ apiVersion: v1
 kind: Pod
 spec:
   containers:
-  - name: jnlp
-    image: jenkins/inbound-agent:latest
-    tty: true
   - name: kaniko
-    image: quay.io/openshift/kaniko-executor:latest
+    image: sridevi1902/kaniko:latest   # <-- your Docker Hub image
+    command:
+    - cat
     tty: true
   - name: kubectl
     image: bitnami/kubectl:latest
@@ -22,7 +21,7 @@ spec:
     }
 
     stages {
-        stage('Build & Push Docker Image') {
+        stage('Build & Push Image') {
             steps {
                 withCredentials([usernamePassword(
                     credentialsId: 'dockerhub',
@@ -33,21 +32,19 @@ spec:
                         sh """
                         mkdir -p /kaniko/.docker
                         cat <<EOF > /kaniko/.docker/config.json
-{
-  "auths": {
-    "https://index.docker.io/v1/": {
-      "username": "$DOCKER_USER",
-      "password": "$DOCKER_PASS"
-    }
-  }
-}
+                        {
+                          "auths": {
+                            "https://index.docker.io/v1/": {
+                              "username": "$DOCKER_USER",
+                              "password": "$DOCKER_PASS"
+                            }
+                          }
+                        }
 EOF
                         /kaniko/executor \
                           --dockerfile=app/Dockerfile \
                           --context=\$(pwd)/app \
-                          --destination=sridevi1902/flask-app:latest \
-                          --insecure \
-                          --skip-tls-verify
+                          --destination=sridevi1902/flask-app:latest
                         """
                     }
                 }
