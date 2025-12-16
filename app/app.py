@@ -8,9 +8,9 @@ app = Flask(__name__)
 REQUEST_COUNT = Counter('flask_requests_total', 'Total HTTP requests')
 start_http_server(8000)  # Expose metrics on port 8000
 
-# Deployment info
+# Deployment details (can be made dynamic later)
 DEPLOYMENT_TIME = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-LAST_COMMIT = "N/A"  # Update dynamically if desired
+LAST_COMMIT = "N/A"  # Update later if you fetch commit hash dynamically
 CI_CD_STATUS = "✅ Success"
 
 @app.route("/")
@@ -22,46 +22,37 @@ def portfolio_home():
         <title>🚀 Flask CI/CD + GitOps Project</title>
         <style>
             body {{
-                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                background: linear-gradient(to right, #f0f4f8, #d9e2ec);
-                color: #102a43;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                min-height: 100vh;
-                margin: 0;
+                font-family: Arial, sans-serif;
+                background: #f4f6f8;
+                color: #333;
+                text-align: center;
+                padding: 50px;
             }}
             h1 {{
                 color: #2b7de9;
-                margin-bottom: 20px;
             }}
             .card {{
                 background: #fff;
-                padding: 30px 50px;
-                border-radius: 15px;
-                box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-                max-width: 600px;
-                width: 100%;
+                display: inline-block;
+                padding: 30px;
+                margin-top: 20px;
+                border-radius: 12px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.1);
             }}
             .metric {{
-                font-size: 1.1em;
-                margin: 12px 0;
-            }}
-            .metric span {{
-                font-weight: bold;
-                color: #334e68;
+                font-size: 1.2em;
+                margin: 10px 0;
             }}
         </style>
     </head>
     <body>
         <h1>🚀 Flask CI/CD + GitOps Project</h1>
         <div class="card">
-            <div class="metric"><span>Tech Stack:</span> Flask | Docker | Kubernetes | Jenkins | ArgoCD | NGINX Ingress | Prometheus</div>
-            <div class="metric"><span>Last Git Commit:</span> {LAST_COMMIT}</div>
-            <div class="metric"><span>Deployment Time:</span> {DEPLOYMENT_TIME}</div>
-            <div class="metric"><span>CI/CD Status:</span> {CI_CD_STATUS}</div>
-            <div class="metric"><span>Total Requests:</span> {int(REQUEST_COUNT._value.get())}</div>
+            <div class="metric"><strong>Tech Stack:</strong> Flask | Docker | Kubernetes | Jenkins | ArgoCD | NGINX Ingress | Prometheus</div>
+            <div class="metric"><strong>Last Git Commit:</strong> {LAST_COMMIT}</div>
+            <div class="metric"><strong>Deployment Time:</strong> {DEPLOYMENT_TIME}</div>
+            <div class="metric"><strong>CI/CD Status:</strong> {CI_CD_STATUS}</div>
+            <div class="metric"><strong>Total Requests:</strong> {int(REQUEST_COUNT._value.get())}</div>
         </div>
     </body>
     </html>
