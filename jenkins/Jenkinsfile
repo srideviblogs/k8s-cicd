@@ -9,9 +9,9 @@ spec:
   - name: kaniko
     image: sridevi1902/kaniko:latest
     command:
-    - /kaniko/executor
+    - /busybox/sleep
     args:
-    - --help
+    - "999999"
     tty: true
 
   - name: kubectl
