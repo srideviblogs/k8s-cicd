@@ -13,14 +13,6 @@ spec:
     - -c
     - sleep 999999
     tty: true
-
-  - name: kubectl
-    image: bitnami/kubectl:latest
-    command:
-    - sh
-    - -c
-    - sleep 999999
-    tty: true
 """
     }
   }
@@ -60,15 +52,18 @@ EOF
 
     stage('Deploy to Kubernetes') {
       steps {
-        container('kubectl') {
-          dir("${WORKSPACE}") {
-            sh '''
-              echo "Deploying application..."
-              kubectl apply -f k8s/deployment.yaml
-              kubectl apply -f k8s/service.yaml
-              kubectl rollout status deployment/flask-app
-            '''
-          }
+        container('kaniko') {
+          sh '''
+            echo "Installing kubectl..."
+            curl -LO https://dl.k8s.io/release/v1.30.0/bin/linux/amd64/kubectl
+            chmod +x kubectl
+            mv kubectl /usr/local/bin/
+
+            echo "Deploying application..."
+            kubectl apply -f k8s/deployment.yaml
+            kubectl apply -f k8s/service.yaml
+            kubectl rollout status deployment/flask-app
+          '''
         }
       }
     }
