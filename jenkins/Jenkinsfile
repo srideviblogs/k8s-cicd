@@ -15,7 +15,7 @@ spec:
     tty: true
 
   - name: kubectl
-    image: bitnami/kubectl:latest
+    image: bitnami/kubectl:1.30
     command:
     - sh
     - -c
@@ -23,11 +23,6 @@ spec:
     tty: true
 """
     }
-  }
-
-  environment {
-    IMAGE_NAME = "sridevi1902/flask-app"
-    IMAGE_TAG  = "latest"
   }
 
   stages {
@@ -40,24 +35,23 @@ spec:
             usernameVariable: 'DOCKER_USER',
             passwordVariable: 'DOCKER_PASS'
           )]) {
-
             sh '''
-            mkdir -p /kaniko/.docker
-
-            echo "{
-              \\"auths\\": {
-                \\"https://index.docker.io/v1/\\": {
-                  \\"username\\": \\"$DOCKER_USER\\",
-                  \\"password\\": \\"$DOCKER_PASS\\"
+              mkdir -p /kaniko/.docker
+              cat > /kaniko/.docker/config.json <<EOF
+              {
+                "auths": {
+                  "https://index.docker.io/v1/": {
+                    "username": "${DOCKER_USER}",
+                    "password": "${DOCKER_PASS}"
+                  }
                 }
               }
-            }" > /kaniko/.docker/config.json
+EOF
 
-            /kaniko/executor \
-              --dockerfile=app/Dockerfile \
-              --context=app \
-              --destination=$IMAGE_NAME:$IMAGE_TAG \
-              --verbosity=info
+              /kaniko/executor \
+                --dockerfile=app/Dockerfile \
+                --context=app \
+                --destination=sridevi1902/flask-app:latest
             '''
           }
         }
@@ -67,10 +61,14 @@ spec:
     stage('Deploy to Kubernetes') {
       steps {
         container('kubectl') {
-          sh '''
-          kubectl apply -f k8s/deployment.yaml
-          kubectl apply -f k8s/service.yaml
-          '''
+          dir("${WORKSPACE}") {
+            sh '''
+              echo "Deploying application..."
+              kubectl apply -f k8s/deployment.yaml
+              kubectl apply -f k8s/service.yaml
+              kubectl rollout status deployment/flask-app
+            '''
+          }
         }
       }
     }
