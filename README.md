@@ -1,4 +1,4 @@
-# 🚀 CI/CD with GitOps
+# CI/CD with GitOps
 
 **Project Overview:**  
 This project demonstrates a full **CI/CD pipeline** using **Jenkins**, **Kaniko**, **ArgoCD**, and **Kubernetes** on **Minikube**. It automates building, pushing, and deploying a Python Flask application following **GitOps principles**.  
@@ -17,7 +17,7 @@ This project demonstrates a full **CI/CD pipeline** using **Jenkins**, **Kaniko*
 
 ---
 
-## 🏗 Architecture
+## Architecture
 
 ![Architecture Diagram](screenshorts/architecture.jpg)  
 *Flow: GitHub → Jenkins (Kaniko) → DockerHub → ArgoCD → Kubernetes Pods → NGINX Ingress → Browser*
@@ -41,7 +41,7 @@ This project demonstrates a full **CI/CD pipeline** using **Jenkins**, **Kaniko*
 
 ---
 
-##  Application Deployment
+## Application Deployment
 
 **Kubernetes Resources (Jenkins namespace):**
 
@@ -61,6 +61,10 @@ Shows the Flask app synced and healthy with automated GitOps deployment.
 ![Argocd-Dashboard](screenshorts/argocd-dashboard.jpg)
 
 ![Argocd-Dashboard1](screenshorts/argocd-dashboard1.jpg)
+
+## Access the Application
+
+![Flask-App](screenshorts/flask-app.jpg)
 
 
 
