@@ -9,7 +9,9 @@ spec:
   - name: kaniko
     image: sridevi1902/kaniko:latest
     command:
-    - /busybox/cat
+    - /kaniko/executor
+    args:
+    - --help
     tty: true
 
   - name: kubectl
@@ -28,7 +30,7 @@ spec:
 
   stages {
 
-    stage('Build & Push Docker Image') {
+    stage('Build & Push Image') {
       steps {
         container('kaniko') {
           withCredentials([usernamePassword(
