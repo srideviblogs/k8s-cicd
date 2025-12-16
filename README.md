@@ -64,9 +64,31 @@ Shows the Flask app synced and healthy with automated GitOps deployment.
 
 ## Access the Application
 
+URL: http://flask.devops.local/
+
+----
+
+## Key Features
+
+Fully automated CI/CD pipeline using Jenkins and Kaniko
+ArgoCD for GitOps-based deployment and sync
+NGINX Ingress exposes the application with a friendly URL
+Modular and namespace-aware deployment
+Ready for Prometheus monitoring
+
+## Future Improvements
+
+Integrate Prometheus and Grafana for metrics and visualization
+Add unit tests and linting for automated code quality checks
+Deploy in a multi-node cluster for high availability
+
+---
+
+## Project Status
+
+## Project Status
+
+Fully deployed and running  
+Flask app live at `http://flask.devops.local/`
+ 
 ![Flask-App](screenshorts/flask-app.jpg)
-
-
-
-
-
