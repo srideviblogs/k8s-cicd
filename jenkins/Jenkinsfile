@@ -8,8 +8,6 @@ spec:
   containers:
   - name: kaniko
     image: sridevi1902/kaniko:latest   # <-- your Docker Hub image
-    command:
-    - cat
     tty: true
   - name: kubectl
     image: bitnami/kubectl:latest
