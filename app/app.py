@@ -1,62 +1,65 @@
-from flask import Flask
-from prometheus_client import start_http_server, Counter
+from flask import Flask, Response
+from prometheus_client import Counter, Histogram, generate_latest, CONTENT_TYPE_LATEST
 from datetime import datetime
+import time
 
 app = Flask(__name__)
 
-# Prometheus metric
-REQUEST_COUNT = Counter('flask_requests_total', 'Total HTTP requests')
-start_http_server(8000)  # Expose metrics on port 8000
+# Prometheus metrics
+REQUEST_COUNT = Counter(
+    "flask_http_requests_total",
+    "Total HTTP requests",
+    ["method", "endpoint", "status"]
+)
 
-# Deployment details (can be made dynamic later)
+REQUEST_LATENCY = Histogram(
+    "flask_http_request_latency_seconds",
+    "Request latency",
+    ["endpoint"]
+)
+
 DEPLOYMENT_TIME = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-LAST_COMMIT = "N/A"  # Update later if you fetch commit hash dynamically
-CI_CD_STATUS = "✅ Success"
+LAST_COMMIT = "N/A"
+CI_CD_STATUS = "Success"
+
 
 @app.route("/")
 def portfolio_home():
-    REQUEST_COUNT.inc()
-    return f"""
+    start = time.time()
+
+    response_html = f"""
     <html>
-    <head>
-        <title>🚀 Flask CI/CD + GitOps Project</title>
-        <style>
-            body {{
-                font-family: Arial, sans-serif;
-                background: #f4f6f8;
-                color: #333;
-                text-align: center;
-                padding: 50px;
-            }}
-            h1 {{
-                color: #2b7de9;
-            }}
-            .card {{
-                background: #fff;
-                display: inline-block;
-                padding: 30px;
-                margin-top: 20px;
-                border-radius: 12px;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            }}
-            .metric {{
-                font-size: 1.2em;
-                margin: 10px 0;
-            }}
-        </style>
-    </head>
-    <body>
+    <head><title>Flask CI/CD + GitOps</title></head>
+    <body style="font-family:Arial; text-align:center;">
         <h1>🚀 Flask CI/CD + GitOps Project</h1>
-        <div class="card">
-            <div class="metric"><strong>Tech Stack:</strong> Flask | Docker | Kubernetes | Jenkins | ArgoCD | NGINX Ingress | Prometheus</div>
-            <div class="metric"><strong>Last Git Commit:</strong> {LAST_COMMIT}</div>
-            <div class="metric"><strong>Deployment Time:</strong> {DEPLOYMENT_TIME}</div>
-            <div class="metric"><strong>CI/CD Status:</strong> {CI_CD_STATUS}</div>
-            <div class="metric"><strong>Total Requests:</strong> {int(REQUEST_COUNT._value.get())}</div>
-        </div>
+        <p><b>Tech Stack:</b> Flask | Docker | Kubernetes | Jenkins | ArgoCD | Prometheus</p>
+        <p><b>Last Commit:</b> {LAST_COMMIT}</p>
+        <p><b>Deployment Time:</b> {DEPLOYMENT_TIME}</p>
+        <p><b>CI/CD Status:</b> {CI_CD_STATUS}</p>
     </body>
     </html>
     """
+
+    latency = time.time() - start
+    REQUEST_COUNT.labels("GET", "/", "200").inc()
+    REQUEST_LATENCY.labels("/").observe(latency)
+
+    return response_html, 200
+
+
+@app.route("/health")
+def health():
+    REQUEST_COUNT.labels("GET", "/health", "200").inc()
+    return "OK", 200
+
+
+@app.route("/metrics")
+def metrics():
+    return Response(
+        generate_latest(),
+        mimetype=CONTENT_TYPE_LATEST
+    )
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
