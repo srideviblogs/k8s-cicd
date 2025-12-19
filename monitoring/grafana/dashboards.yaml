@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboards
+  namespace: jenkins
+  labels:
+    grafana_dashboard: "1"
+data:
+  flask-dashboard.json: |
+    {
+      "title": "Flask Application Monitoring",
+      "panels": [
+        {
+          "type": "stat",
+          "title": "App Status",
+          "targets": [
+            {
+              "expr": "up{job=\"flask-app\"}",
+              "refId": "A"
+            }
+          ]
+        },
+        {
+          "type": "graph",
+          "title": "Request Rate",
+          "targets": [
+            {
+              "expr": "rate(http_requests_total[1m])",
+              "refId": "B"
+            }
+          ]
+        }
+      ],
+      "schemaVersion": 36,
+      "version": 1
+    }
