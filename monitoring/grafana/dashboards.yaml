@@ -3,12 +3,14 @@ kind: ConfigMap
 metadata:
   name: grafana-dashboards
   namespace: jenkins
-  labels:
-    grafana_dashboard: "1"
 data:
   flask-dashboard.json: |
     {
+      "id": null,
       "title": "Flask Application Monitoring",
+      "timezone": "browser",
+      "schemaVersion": 36,
+      "version": 1,
       "panels": [
         {
           "type": "stat",
@@ -18,19 +20,19 @@ data:
               "expr": "up{job=\"flask-app\"}",
               "refId": "A"
             }
-          ]
+          ],
+          "gridPos": { "x": 0, "y": 0, "w": 12, "h": 8 }
         },
         {
-          "type": "graph",
+          "type": "timeseries",
           "title": "Request Rate",
           "targets": [
             {
               "expr": "rate(http_requests_total[1m])",
               "refId": "B"
             }
-          ]
+          ],
+          "gridPos": { "x": 12, "y": 0, "w": 12, "h": 8 }
         }
-      ],
-      "schemaVersion": 36,
-      "version": 1
+      ]
     }
