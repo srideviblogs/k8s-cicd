@@ -16,7 +16,7 @@ It showcases how application-level metrics can be collected, visualized, and use
 
 ## Architecture
 
-![Architecture Diagram](screenshorts/monitoring.jpg) 
+![Architecture Diagram](screenshots/monitoring.jpg) 
 
 ---
 
@@ -60,7 +60,9 @@ Metrics exposed by the Flask application:
 
 Metrics endpoint:
 
+```text
 http://<flask-app-service>:5000/metrics
+```
 
 ### Prometheus Targets
 ![Prometheus Targets](screenshorts/prometheus-targets.jpg)
@@ -71,13 +73,13 @@ http://<flask-app-service>:5000/metrics
 
 The following alerts are configured in Prometheus:
 
-### 1️⃣ FlaskAppDown
+### FlaskAppDown
 - Fires when no Flask pods are running for more than 1 minute
 
-### 2️⃣ FlaskHighErrorRate
+### FlaskHighErrorRate
 - Fires when more than 5% of requests return 5xx errors
 
-### 3️⃣ FlaskHighLatency
+### FlaskHighLatency
 - Fires when 95th percentile latency exceeds 1 second
 
 Alerts are visible in:
@@ -85,7 +87,7 @@ Alerts are visible in:
 - Grafana Alerting UI
 
 ### Prometheus Alerts
-![Prometheus Alerts](screenshorts/prometheus-alerts.jpg)
+![Prometheus Alerts](screenshots/prometheus-alerts.jpg)
 
 ---
 
@@ -99,13 +101,15 @@ Alerts are visible in:
 
 Grafana URL:
 
+```text
 http://127.0.0.1:3000/
+```
 
 ### Grafana Dashboard – Flask Application Monitoring
-![Grafana Dashboard](screenshorts/grafana-dashboard.jpg)
+![Grafana Dashboard](screenshots/grafana-dashboard.jpg)
 
 ### Grafana Alerts
-![Grafana Alerts](screenshorts/grafana-alerts.jpg)
+![Grafana Alerts](screenshots/grafana-alerts.jpg)
 
 ---
 
