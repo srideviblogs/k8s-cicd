@@ -65,7 +65,7 @@ http://<flask-app-service>:5000/metrics
 ```
 
 ### Prometheus Targets
-![Prometheus Targets](screenshorts/prometheus-targets.jpg)
+![Prometheus Targets](screenshots/prometheus-targets.jpg)
 
 ---
 
