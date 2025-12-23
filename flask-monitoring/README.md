@@ -73,13 +73,13 @@ http://<flask-app-service>:5000/metrics
 
 The following alerts are configured in Prometheus:
 
-FlaskAppDown
+### FlaskAppDown
 - Fires when no Flask pods are running for more than 1 minute
 
-FlaskHighErrorRate
+### FlaskHighErrorRate
 - Fires when more than 5% of requests return 5xx errors
 
-FlaskHighLatency
+### FlaskHighLatency
 - Fires when 95th percentile latency exceeds 1 second
 
 Alerts are visible in:
