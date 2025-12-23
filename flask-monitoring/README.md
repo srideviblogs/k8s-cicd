@@ -3,7 +3,7 @@
 ## Project Overview
 This project demonstrates **end-to-end monitoring and alerting** for a Flask application deployed on **Kubernetes** using **Prometheus** and **Grafana**.
 
-It showcases how application-level metrics can be collected, visualized, and used to trigger alerts for proactive monitoring in a cloud-native environment.
+It showcases how application-level metrics can be collected, visualized and used to trigger alerts for proactive monitoring in a cloud-native environment.
 
 ### Key Highlights
 - Custom Flask metrics using Prometheus client
