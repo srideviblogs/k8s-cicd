@@ -115,19 +115,19 @@ http://127.0.0.1:3000/
 
 ## Setup Instructions
 
-### 1️⃣ Clone Repository
+### Clone Repository
 
 ```bash
 git clone https://github.com/srideviblogs/k8s-cicd.git
 cd k8s-cicd
 ```
-### 2️⃣ Build Flask Docker Image
+### Build Flask Docker Image
 
 ```bash
 docker build -t sridevi1902/flask-app:latest .
 docker push sridevi1902/flask-app:latest
 ```
-3️⃣ Deploy to Kubernetes
+### Deploy to Kubernetes
 
 All monitoring and alerting components are organized under dedicated folders
 to follow real-world Kubernetes best practices.
@@ -157,7 +157,7 @@ Deploy Alertmanager
 kubectl apply -f monitoring/alertmanager/
 ```
 
-4️⃣ Access Prometheus & Grafana
+### Access Prometheus & Grafana
 
 ```bash
 kubectl port-forward -n jenkins svc/prometheus-service 9091:9090
