@@ -28,7 +28,7 @@ data:
           "title": "Request Rate",
           "targets": [
             {
-              "expr": "rate(http_requests_total[1m])",
+              "expr": "rate(flask_http_requests_total[1m])",
               "refId": "B"
             }
           ],
