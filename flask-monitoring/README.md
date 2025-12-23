@@ -105,7 +105,7 @@ http://127.0.0.1:3000/
 ![Grafana Dashboard](screenshorts/grafana-dashboard.jpg)
 
 ### Grafana Alerts
-![Grafana Alerts](screenshots/grafana-alerts.jpg)
+![Grafana Alerts](screenshorts/grafana-alerts.jpg)
 
 ---
 
@@ -161,6 +161,7 @@ kubectl port-forward -n jenkins svc/grafana 3000:3000
 ```
 
 Prometheus: http://127.0.0.1:9091
+
 Grafana: http://127.0.0.1:3000
 
 
